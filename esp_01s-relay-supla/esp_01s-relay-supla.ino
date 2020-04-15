@@ -1,8 +1,11 @@
 /*
-  Sketch created by Ktechnik on Youtube:
+  Sketch modified by Ktechnik on Youtube:
   https://www.youtube.com/channel/UC8d0s5nv6YUfsSpE1L8X2ZQ
 */
 //Define libraries to use Supla with ESP-01s 
+//You must download and install library for Supla. There you have it:
+//https://drive.google.com/file/d/0B3DJSAQwtTAyVGVZLWpkUTlLcWc/view
+  
 #include <srpc.h>
 #include <log.h>
 #include <eh.h>
@@ -23,7 +26,7 @@
 #include <ESP8266WiFiSTA.h>
 #include <WiFiUdp.h>
 
-#define RELAY 2 //Define realy pin
+#define RELAY 2 //Define realy pin. It's IO2 pin on ESP-01s
 
 WiFiClient client;
 
@@ -43,6 +46,8 @@ void setup() {
   //but if you don't like to reverce signal stay with SuplaDevice.addRelay(RELAY);
   SuplaDevice.begin(GUID,mac,"svr.supla.org",0000,"0000"); // Setting connection to Supla in order GUID, mac, sever adress, Location ID, password
 }
+
+
 
 void loop() {
   SuplaDevice.iterate();//start using Supla
