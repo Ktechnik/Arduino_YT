@@ -1,3 +1,7 @@
+/*
+  Sketch modified by Ktechnik on Youtube:
+  https://www.youtube.com/channel/UC8d0s5nv6YUfsSpE1L8X2ZQ
+*/
 //Define libraries to use Supla with ESP-01s
 //You must download and install library for Supla. There you have it:
 //https://drive.google.com/file/d/0B3DJSAQwtTAyVGVZLWpkUTlLcWc/view
@@ -29,37 +33,38 @@ WiFiClient client;
 const char* ssid     = "ssid"; //Setting SSID for your WiFi
 const char* password = "pass"; //Setting password for your WiFi
 
-#define DHTPIN 2
-#define DHTTYPE DHT22
+#define DHTPIN 2 //DHT pin
+#define DHTTYPE DHT22 // DHT type (DHT11, DHT21, DHT22)
 
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);//Setting DHT sensor
 
-
+//Downloading data from sensor
 void get_temperature_and_humidity(int channelNumber, double *temp, double *humidity){
 
-  *temp = dht.readTemperature()/2.5;
+  *temp = dht.readTemperature();
   *humidity = dht.readHumidity();
 
   if ( isnan(*temp) || isnan(*humidity) ) {
     *temp = 0;
     *humidity = 0;
   }
-
 }
+
 void setup() {
-  dht.begin();
+  dht.begin(); //initiating sensor
 
   Serial.begin(115200);
   delay(10);
 
   SuplaDevice.setTemperatureHumidityCallback(&get_temperature_and_humidity);
+  //Function to give to Supla data of sensor
 
   char GUID[SUPLA_GUID_SIZE] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
   // Setting GUID to connect to Supla (you can get it from https://www.supla.org/arduino/get-guid)
 
 
   uint8_t mac[6] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; //Setting mac of your device
-  SuplaDevice.addDHT22();
+  SuplaDevice.addDHT22();//Add sensor
   SuplaDevice.begin(GUID, mac, "svr30.supla.org", 1234, "1234"); // Setting connection to Supla in order GUID, mac, sever adress, Location ID, password
 }
 void loop() {
